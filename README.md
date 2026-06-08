@@ -8,8 +8,7 @@ test automation, and API testing skills.
 
 ## Project Overview
 
-ImmoPrüf is a web application that calculates real estate market 
-values and mortgage lending values (Beleihungswert). 
+ImmoPrüf is a web application.
 The project covers the full QA workflow from bug discovery 
 to automated regression testing.
 
