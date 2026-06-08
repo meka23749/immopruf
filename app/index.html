@@ -226,8 +226,7 @@
     const datum = new Date().toLocaleDateString('de-DE');
 
     // BUG 3 : Fläche wird ohne Einheit angezeigt
-    document.getElementById('res-flaeche').textContent = flaeche;
-
+document.getElementById('res-flaeche').textContent = flaeche + ' m²';
     // BUG 4 : Gewerbeimmobilie wird als "undefined" angezeigt
     const typLabels = { wohnung: 'Wohnung', haus: 'Einfamilienhaus' };
     document.getElementById('res-typ').textContent = typLabels[typ];
