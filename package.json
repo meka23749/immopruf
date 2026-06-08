@@ -24,5 +24,8 @@
   "homepage": "https://github.com/meka23749/immopruf#readme",
   "devDependencies": {
     "@playwright/test": "^1.60.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
