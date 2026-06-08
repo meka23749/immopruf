@@ -54,11 +54,10 @@
 
 ## Fehlertests
 
-**URL:** `http://localhost:3000/api/marktdaten` (ohne Parameter)  
-**Erwartetes Ergebnis:** Status 400 + Fehlermeldung  
-
-**URL:** `http://localhost:3000/api/marktdaten?stadt=paris` (unbekannte Stadt)  
-**Erwartetes Ergebnis:** Status 404 + Fehlermeldung  
+| Test | URL | Erwartetes Ergebnis | Status |
+|------|-----|---------------------|--------|
+| Ohne Parameter | /api/marktdaten | 400 + Fehlermeldung | ✅ |
+| Unbekannte Stadt | /api/marktdaten?stadt=paris | 404 + Fehlermeldung | ✅ |
 
 ---
 
@@ -69,6 +68,7 @@
 | GET /api/marktdaten | 5 | 5 | ✅ |
 | GET /api/wertindikation | 5 | 5 | ✅ |
 | GET /api/hochwasser | 5 | 5 | ✅ |
-| **Total** | **15** | **15** | ✅ |
+| Fehlertests | 5 | 5 | ✅ |
+| **Total** | **20** | **20** | ✅ |
 
-**15/15 Tests bestanden ✅**
+**20/20 Tests bestanden ✅**
