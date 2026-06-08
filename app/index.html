@@ -228,7 +228,7 @@
     // BUG 3 : Fläche wird ohne Einheit angezeigt
 document.getElementById('res-flaeche').textContent = flaeche + ' m²';
     // BUG 4 : Gewerbeimmobilie wird als "undefined" angezeigt
-    const typLabels = { wohnung: 'Wohnung', haus: 'Einfamilienhaus' };
+const typLabels = { wohnung: 'Wohnung', haus: 'Einfamilienhaus', gewerbe: 'Gewerbeimmobilie' };
     document.getElementById('res-typ').textContent = typLabels[typ];
 
     // BUG 5 : Marktwert unter 10.000€ zeigt keine Fehlermeldung
