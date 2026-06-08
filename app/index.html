@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>ImmoPrüf — Immobilienbewertung</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 40px 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      padding: 32px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
+      color: #1a1a18;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 28px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #444;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      background: #fafafa;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #4a90d9;
+      background: white;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2c5f9e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    button:hover { background: #1e4a80; }
+    .result {
+      margin-top: 24px;
+      padding: 20px;
+      background: #f0f7ff;
+      border-radius: 8px;
+      border-left: 4px solid #2c5f9e;
+      display: none;
+    }
+    .result h2 {
+      font-size: 16px;
+      margin-bottom: 14px;
+      color: #1a1a18;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #e0eaf5;
+      font-size: 14px;
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-row .label { color: #666; }
+    .result-row .value { font-weight: bold; color: #1a1a18; }
+    .value.highlight { color: #2c5f9e; font-size: 16px; }
+    .error {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fff0f0;
+      border-left: 4px solid #e24b4a;
+      border-radius: 6px;
+      color: #a32d2d;
+      font-size: 13px;
+      display: none;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #e8f4e8;
+      color: #3b6d11;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>ImmoPrüf <span class="badge">v1.0</span></h1>
+  <p class="subtitle">Schnelle Immobilienbewertung — Wertindikation</p>
+
+  <div class="form-group">
+    <label for="adresse">Adresse</label>
+    <input type="text" id="adresse" placeholder="z.B. Hauptstrasse 12, Erfurt" />
+  </div>
+
+  <div class="form-group">
+    <label for="typ">Immobilientyp</label>
+    <select id="typ">
+      <option value="">-- Bitte wählen --</option>
+      <option value="wohnung">Wohnung</option>
+      <option value="haus">Einfamilienhaus</option>
+      <option value="gewerbe">Gewerbeimmobilie</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="flaeche">Wohnfläche (m²)</label>
+    <input type="number" id="flaeche" placeholder="z.B. 85" min="1" />
+  </div>
+
+  <div class="form-group">
+    <label for="baujahr">Baujahr</label>
+    <input type="number" id="baujahr" placeholder="z.B. 1995" min="1800" max="2026" />
+  </div>
+
+  <button onclick="berechnen()">Wert berechnen</button>
+
+  <div class="error" id="fehler"></div>
+
+  <div class="result" id="ergebnis">
+    <h2>Bewertungsergebnis</h2>
+    <div class="result-row">
+      <span class="label">Adresse</span>
+      <span class="value" id="res-adresse"></span>
+    </div>
+    <div class="result-row">
+      <span class="label">Typ</span>
+      <span class="value" id="res-typ"></span>
+    </div>
+    <div class="result-row">
+      <span class="label">Fläche</span>
+      <span class="value" id="res-flaeche"></span>
+    </div>
+    <div class="result-row">
+      <span class="label">Baujahr</span>
+      <span class="value" id="res-baujahr"></span>
+    </div>
+    <div class="result-row">
+      <span class="label">Marktwert (geschätzt)</span>
+      <span class="value highlight" id="res-wert"></span>
+    </div>
+    <div class="result-row">
+      <span class="label">Beleihungswert (60%)</span>
+      <span class="value" id="res-beleihung"></span>
+    </div>
+    <div class="result-row">
+      <span class="label">Bewertungsdatum</span>
+      <span class="value" id="res-datum"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PREISE = {
+    wohnung:  2800,
+    haus:     3200,
+    gewerbe:  1900
+  };
+
+  function berechnen() {
+    const adresse = document.getElementById('adresse').value.trim();
+    const typ     = document.getElementById('typ').value;
+    const flaeche = parseFloat(document.getElementById('flaeche').value);
+    const baujahr = parseInt(document.getElementById('baujahr').value);
+
+    const fehlerEl   = document.getElementById('fehler');
+    const ergebnisEl = document.getElementById('ergebnis');
+    fehlerEl.style.display   = 'none';
+    ergebnisEl.style.display = 'none';
+
+    // Validierung
+    if (!adresse) {
+      zeigeFehler('Bitte geben Sie eine Adresse ein.');
+      return;
+    }
+    if (!typ) {
+      zeigeFehler('Bitte wählen Sie einen Immobilientyp.');
+      return;
+    }
+    if (!flaeche || flaeche <= 0) {
+      zeigeFehler('Bitte geben Sie eine gültige Wohnfläche ein.');
+      return;
+    }
+    if (!baujahr || baujahr < 1800 || baujahr > 2026) {
+      zeigeFehler('Bitte geben Sie ein gültiges Baujahr ein.');
+      return;
+    }
+
+    // Berechnung Marktwert
+    const preisProQm = PREISE[typ];
+    const alter = 2026 - baujahr;
+    const altersFaktor = Math.max(0.5, 1 - (alter * 0.004));
+    const marktwert = preisProQm * flaeche * altersFaktor;
+
+    // BUG 1 : Beleihungswert falsch berechnet (sollte 60% sein, ist 80%)
+    const beleihungswert = marktwert * 0.8;
+
+    // BUG 2 : Datum zeigt immer 01.01.1970 statt heute
+    const datum = new Date(0).toLocaleDateString('de-DE');
+
+    // BUG 3 : Fläche wird ohne Einheit angezeigt
+    document.getElementById('res-flaeche').textContent = flaeche;
+
+    // BUG 4 : Gewerbeimmobilie wird als "undefined" angezeigt
+    const typLabels = { wohnung: 'Wohnung', haus: 'Einfamilienhaus' };
+    document.getElementById('res-typ').textContent = typLabels[typ];
+
+    // BUG 5 : Marktwert unter 10.000€ zeigt keine Fehlermeldung
+    // (logischer Fehler — eine Immobilie kann nicht unter 10.000€ wert sein)
+
+    document.getElementById('res-adresse').textContent  = adresse;
+    document.getElementById('res-baujahr').textContent  = baujahr;
+    document.getElementById('res-wert').textContent     = formatEuro(marktwert);
+    document.getElementById('res-beleihung').textContent = formatEuro(beleihungswert);
+    document.getElementById('res-datum').textContent    = datum;
+
+    ergebnisEl.style.display = 'block';
+  }
+
+  function zeigeFehler(msg) {
+    const el = document.getElementById('fehler');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function formatEuro(wert) {
+    return new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 0
+    }).format(wert);
+  }
+</script>
+</body>
+</html>
