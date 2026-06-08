@@ -223,7 +223,7 @@
    const beleihungswert = marktwert * 0.6;
 
     // BUG 2 : Datum zeigt immer 01.01.1970 statt heute
-    const datum = new Date(0).toLocaleDateString('de-DE');
+    const datum = new Date().toLocaleDateString('de-DE');
 
     // BUG 3 : Fläche wird ohne Einheit angezeigt
     document.getElementById('res-flaeche').textContent = flaeche;
