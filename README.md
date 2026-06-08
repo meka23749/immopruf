@@ -59,6 +59,7 @@ to automated regression testing.
 
 ## Project Structure
 
+```
 immopruf/
 ├── app/
 │   └── index.html          ← Web application
@@ -72,6 +73,7 @@ immopruf/
 ├── playwright.config.ts
 ├── package.json
 └── README.md
+```
 
 ---
 
