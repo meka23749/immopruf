@@ -220,7 +220,7 @@
     const marktwert = preisProQm * flaeche * altersFaktor;
 
     // BUG 1 : Beleihungswert falsch berechnet (sollte 60% sein, ist 80%)
-    const beleihungswert = marktwert * 0.8;
+   const beleihungswert = marktwert * 0.6;
 
     // BUG 2 : Datum zeigt immer 01.01.1970 statt heute
     const datum = new Date(0).toLocaleDateString('de-DE');
