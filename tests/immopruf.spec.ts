@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const APP_URL = process.env.APP_URL || 'file:///C:/Users/Steve/Desktop/immopruf/app/index.html';
+const APP_URL = process.env.APP_URL || 'http://localhost:8080/index.html';
 
 async function fillForm(page, data: {
   adresse?: string,
