@@ -28,19 +28,14 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Start API server
-        run: node api/server.js &
-
-      - name: Start HTTP server for app
-        run: npx http-server app -p 8080 &
-
-      - name: Wait for servers
+      - name: Start servers
         run: |
-          npx wait-on http://localhost:8080/index.html --timeout 30000
-          npx wait-on http-get://localhost:3000/api/marktdaten --timeout 30000
+          node api/server.js &
+          npx http-server app -p 8080 &
+          sleep 8
 
       - name: Run Playwright tests
-        run: npx playwright test --reporter=list
+        run: npx playwright test
         env:
           APP_URL: http://localhost:8080/index.html
 

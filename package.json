@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/meka23749/immopruf#readme",
   "devDependencies": {
-    "@playwright/test": "^1.60.0"
+    "@playwright/test": "^1.60.0",
+    "wait-on": "^9.0.10"
   },
   "dependencies": {
     "express": "^5.2.1"
