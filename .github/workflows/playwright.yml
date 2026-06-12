@@ -41,3 +41,8 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+      - name: Run Playwright tests
+        run: npx playwright test --reporter=list
+        env:
+          APP_URL: file:///home/runner/work/immopruf/immopruf/app/index.html
