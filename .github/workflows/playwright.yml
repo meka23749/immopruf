@@ -35,7 +35,7 @@ jobs:
         run: npx wait-on http://localhost:8080/index.html --timeout 30000
 
       - name: Wait for API server
-        run: npx wait-on http://localhost:3000/api/marktdaten?stadt=erfurt --timeout 30000
+        run: npx wait-on http://localhost:3000/api/marktdaten?stadt=Hannover --timeout 30000
 
       - name: Run Playwright tests
         run: npx playwright test --reporter=list
